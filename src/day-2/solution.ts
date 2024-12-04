@@ -12,17 +12,13 @@ Example:
 8 6 4 4 1: Unsafe because 4 4 is neither an increase or a decrease.
 1 3 6 7 9: Safe because the levels are all increasing by 1, 2, or 3.
 */
+
 const isSafeWithDampener = (report) => {
     if (isReportSafe(report)) return true;
     return report.some((_, i) => isReportSafe(report.filter((_, j) => j !== i)));
 };
 
-const validateStep = (currentValue, nextValue) => {
-    const stepDifference = Math.abs(currentValue - nextValue);
-    return stepDifference >= 1 || stepDifference <= 3;
-};
-const isReportSafe = (report: number[], isFirstStepIncrease = false) => {
-    // let isFirstStepIncreasing = isFirstStepIncrease;
+const isReportSafe = (report: number[]) => {
     const isIncreasing = report.every(
         (val, i) => i === 0 || val >= report[i - 1]
     );
@@ -33,30 +29,7 @@ const isReportSafe = (report: number[], isFirstStepIncrease = false) => {
     const isStepValid = (val, report) => Math.abs(val - report) >= 1 && Math.abs(val - report) <= 3
     const areAllStepsValid = report.every((val, i) => i === 0 || isStepValid(val, report[i - 1]))
 
-    // const hasViolations = report.some((currentValue, index) => {
-    //     const nextValue = report[index + 1];
-    //     if (index === 0) {
-    //         isFirstStepIncreasing = currentValue < nextValue;
-    //     }
-
-    //     if (nextValue === undefined) return false;
-
-    //     const stepDifference = Math.abs(currentValue - nextValue);
-    //     const isStepValid = stepDifference >= 1 || stepDifference <= 3;
-
-    //     const isOrderRuleFollowed = isFirstStepIncreasing
-    //         ? currentValue > nextValue
-    //         : currentValue < nextValue;
-
-    //     if (isStepValid) {
-    //         // console.log("test:", currentValue, nextValue);
-    //         return true;
-    //     }
-    //     return false;
-    // });
     return (isIncreasing || isDecreasing) && areAllStepsValid;
-
-    // return !Boolean(hasViolations);
 };
 
 const getSafeReportsAmount = (reports) => {
@@ -66,9 +39,6 @@ const getSafeReportsAmount = (reports) => {
     );
     console.log("safe Reports count:", safeReportsCount);
     console.log("Unsafe reports count:", reports.length - safeReportsCount);
-    // printFile("safe-reports", safeReports);
-
-    // return safeReportsCount;
 };
 
 // 324 correct from the website
